@@ -2,9 +2,9 @@ namespace CleanArchitecture.Domain.Vehiculos;
 
 public record TipoMoneda
 {
-    private static TipoMoneda Usd => new(Constans.Usd);
-    private static TipoMoneda Eur => new(Constans.Eur);
-    private static TipoMoneda None = new(Constans.None);
+    public static TipoMoneda Usd => new(Constans.Usd);
+    public static TipoMoneda Eur => new(Constans.Eur);
+    public static TipoMoneda None = new(Constans.None);
     private TipoMoneda(string codigo) => Codigo = codigo;
     public string? Codigo { get; init; }
 
