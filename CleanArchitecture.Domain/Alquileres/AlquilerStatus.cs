@@ -4,7 +4,7 @@ public enum AlquilerStatus
 {
     Reservado = 1,
     Alquilado = 2,
-    Rechazado = 3,
+    Negado = 3,
     Cancelado = 4,
-    Completado = 5
+    Confirmado = 5
 }

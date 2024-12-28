@@ -19,7 +19,7 @@ public sealed class Vehiculo : Entity
         Vin = vin;
         Precio = precio;
         Mantenimiento = mantenimiento;
-        FechaUltimaAlquiler =fechaUltimaAlquiler;
+        FechaUltimaAlquiler = fechaUltimaAlquiler;
         Accesorios = accesorios;
         Direccion = direccion;
     }
@@ -29,6 +29,6 @@ public sealed class Vehiculo : Entity
     public Direccion? Direccion { get; private set; }
     public Moneda? Precio { get; private set; }
     public Moneda? Mantenimiento { get; private set; }
-    public DateTime? FechaUltimaAlquiler { get; private set; }
+    public DateTime? FechaUltimaAlquiler { get; set; }
     public List<Accesorio> Accesorios { get; private set; } = new();
 }
