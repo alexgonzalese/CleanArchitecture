@@ -37,7 +37,7 @@ public sealed class Alquiler : Entity
     public Moneda? Mantenimeinto { get; private set; }
     public Moneda? Accesorios { get; private set; }
     public Moneda? PrecioTotal { get; private set; }
-    public AlquilerStatus Status { get; private set; }
+    public static AlquilerStatus Status { get; private set; }
     public DateRange? Duracion { get; private set; }
     public DateTime? FechaCreacion { get; private set; }
     public DateTime? FechaConfirmacion { get; private set; }
@@ -53,7 +53,7 @@ public sealed class Alquiler : Entity
         PrecioService precioService
     )
     {
-        var precioDetalle = precioService.CalcularPrecio(vehiculo, duracion);
+        var precioDetalle = precioService.CalcularPrecio(vehiculo, duracion!);
 
         var alquiler = new Alquiler(
             Guid.NewGuid(),
