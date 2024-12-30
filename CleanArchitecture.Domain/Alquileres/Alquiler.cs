@@ -1,5 +1,6 @@
 using CleanArchitecture.Domain.Abstractions;
 using CleanArchitecture.Domain.Alquileres.Events;
+using CleanArchitecture.Domain.Shared;
 using CleanArchitecture.Domain.Vehiculos;
 
 namespace CleanArchitecture.Domain.Alquileres;
@@ -36,7 +37,7 @@ public sealed class Alquiler : Entity
     public Moneda? Mantenimeinto { get; private set; }
     public Moneda? Accesorios { get; private set; }
     public Moneda? PrecioTotal { get; private set; }
-    public AlquilerStatus Status { get; private set; }
+    public static AlquilerStatus Status { get; private set; }
     public DateRange? Duracion { get; private set; }
     public DateTime? FechaCreacion { get; private set; }
     public DateTime? FechaConfirmacion { get; private set; }
@@ -52,7 +53,7 @@ public sealed class Alquiler : Entity
         PrecioService precioService
     )
     {
-        var precioDetalle = precioService.CalcularPrecio(vehiculo, duracion);
+        var precioDetalle = precioService.CalcularPrecio(vehiculo, duracion!);
 
         var alquiler = new Alquiler(
             Guid.NewGuid(),
@@ -89,7 +90,7 @@ public sealed class Alquiler : Entity
         return Result.Success();
     }
 
-    public Result Negar(DateTime utcNow)
+    public Result Rechazar(DateTime utcNow)
     {
         if (Status != AlquilerStatus.Reservado)
         {
@@ -122,6 +123,21 @@ public sealed class Alquiler : Entity
         FechaCancelacion = utcNow;
 
         RaiseDomainEvent(new AlquilerCanceladoDomainEvent(Id));
+
+        return Result.Success();
+    }
+
+    public Result Completar(DateTime utcNow)
+    {
+        if (Status != AlquilerStatus.Confirmado)
+        {
+            return Result.Failure(AlquilerErrors.NotConfirmed);
+        }
+
+        Status = AlquilerStatus.Completado;
+        FechaNegacion = utcNow;
+
+        RaiseDomainEvent(new AlquilerCompletadoDomainEvent(Id));
 
         return Result.Success();
     }
