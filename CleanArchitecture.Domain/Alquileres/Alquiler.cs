@@ -89,7 +89,7 @@ public sealed class Alquiler : Entity
         return Result.Success();
     }
 
-    public Result Negar(DateTime utcNow)
+    public Result Rechazar(DateTime utcNow)
     {
         if (Status != AlquilerStatus.Reservado)
         {
@@ -122,6 +122,21 @@ public sealed class Alquiler : Entity
         FechaCancelacion = utcNow;
 
         RaiseDomainEvent(new AlquilerCanceladoDomainEvent(Id));
+
+        return Result.Success();
+    }
+
+    public Result Completar(DateTime utcNow)
+    {
+        if (Status != AlquilerStatus.Confirmado)
+        {
+            return Result.Failure(AlquilerErrors.NotConfirmed);
+        }
+
+        Status = AlquilerStatus.Completado;
+        FechaNegacion = utcNow;
+
+        RaiseDomainEvent(new AlquilerCompletadoDomainEvent(Id));
 
         return Result.Success();
     }
